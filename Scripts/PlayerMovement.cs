@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : DragonMonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] protected Rigidbody2D _rigidbody;
     [SerializeField] protected Animator _animator;
@@ -13,41 +11,18 @@ public class PlayerMovement : DragonMonoBehaviour
     [SerializeField] protected float speed = 10f;
     [SerializeField] protected float jumpPower = 10f;
     [SerializeField] protected float horizontal;
-    [SerializeField] protected float wallJumpCoolDown;
+    [SerializeField] protected float wallJumpCooldown;
 
-    protected override void LoadComponents()
-    {
-        base.LoadComponents();
-        this.LoadRigidbody();
-        this.LoadAnimator();
-        this.LoadBoxCollider();
-    }
 
-    protected virtual void LoadRigidbody()
+    private void Awake()
     {
-        if (this._rigidbody != null) return;
         this._rigidbody = GetComponent<Rigidbody2D>();
-
-        Debug.LogWarning(transform.name + " : LoadRigidbody ", gameObject);
-    }
-    
-    protected virtual void LoadAnimator()
-    {
-        if (this._animator != null) return;
         this._animator = GetComponent<Animator>();
-
-        Debug.LogWarning(transform.name + " : LoadAnimator ", gameObject);
-    }
-    
-    protected virtual void LoadBoxCollider()
-    {
-        if (this._boxCollider != null) return;
         this._boxCollider = GetComponent<BoxCollider2D>();
 
-        Debug.LogWarning(transform.name + " : LoadBoxCollider ", gameObject);
     }
 
-    protected virtual void Update()
+    private void Update()
     {
         this.horizontal = Input.GetAxis("Horizontal");
 
@@ -62,7 +37,7 @@ public class PlayerMovement : DragonMonoBehaviour
         this._animator.SetBool("walk", this.horizontal != 0);
         this._animator.SetBool("grounded", this.isGrounded());
 
-        if (this.wallJumpCoolDown < 0.2f)
+        if (this.wallJumpCooldown < 0.2f)
         {
             this._rigidbody.velocity = new Vector2(this.horizontal * this.speed, this._rigidbody.velocity.y);
 
@@ -79,11 +54,11 @@ public class PlayerMovement : DragonMonoBehaviour
 
         }
         else
-            this.wallJumpCoolDown += Time.deltaTime;
+            this.wallJumpCooldown += Time.deltaTime;
 
     }
 
-    protected virtual void Jump()
+    private void Jump()
     {
         if (this.isGrounded())
         {
@@ -100,25 +75,25 @@ public class PlayerMovement : DragonMonoBehaviour
             else
                 this._rigidbody.velocity = new Vector2(-Mathf.Sign(this.transform.localScale.x) * 3, 6);
 
-            this.wallJumpCoolDown = 0;
+            this.wallJumpCooldown = 0;
         }
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-    }
-
-    protected virtual bool isGrounded()
+    private bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(this._boxCollider.bounds.center, this._boxCollider.bounds.size, 0, Vector2.down, 0.1f, this._groundLayer);
         return raycastHit.collider != null;
     }
-    
-    protected virtual bool onWall()
+
+    private bool onWall()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(this._boxCollider.bounds.center, this._boxCollider.bounds.size, 0, new Vector2(this.transform.localScale.x, 0), 0.1f, this._wallLayer);
         return raycastHit.collider != null;
+    }
+
+    public bool CanAttack()
+    {
+        return this.horizontal == 0 && this.isGrounded() && !this.onWall();
     }
 
 }
