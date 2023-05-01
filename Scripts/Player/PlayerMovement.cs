@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] protected float horizontal;
     [SerializeField] protected float wallJumpCooldown;
 
+    [Header("Audio Jump")]
+    [SerializeField] private AudioClip jumpSound;
+
 
     private void Awake()
     {
@@ -50,7 +53,14 @@ public class PlayerMovement : MonoBehaviour
                 this._rigidbody.gravityScale = 7;
 
             if (Input.GetKey(KeyCode.Space))
+            {
                 this.Jump();
+
+                if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
+                {
+                    SoundManager.instance.PlaySound(jumpSound);
+                }
+            }
 
         }
         else

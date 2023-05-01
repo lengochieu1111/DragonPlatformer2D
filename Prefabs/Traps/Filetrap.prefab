@@ -73,9 +73,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -11874549
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: 96562327
+  m_SortingLayer: 5
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 84b0d89aa2c8bfb4c8c1d378fa972fbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -126,6 +126,8 @@ MonoBehaviour:
   activeTime: 2
   triggered: 0
   active: 0
+  playerHealth: {fileID: 0}
+  soundFiretrap: {fileID: 8300000, guid: a3367672a9feaa6409ddff787fd860b6, type: 3}
 --- !u!61 &3153954348092583757
 BoxCollider2D:
   m_ObjectHideFlags: 0

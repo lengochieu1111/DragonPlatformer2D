@@ -154,3 +154,4 @@ MonoBehaviour:
     m_Bits: 1024
   attackDelay: 1
   attackTimer: Infinity
+  soundSpiked: {fileID: 8300000, guid: 6bbffbadedffb5b45ad81a9c37971f49, type: 3}
