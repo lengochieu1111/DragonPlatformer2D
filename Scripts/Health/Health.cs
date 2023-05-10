@@ -31,6 +31,20 @@ public class Health : MonoBehaviour
         spriteRend = GetComponent<SpriteRenderer>();
     }
 
+    public void Respawn()
+    {
+        dead = false;
+        AddHealth(startingHealth);
+        animator.ResetTrigger("die");
+        animator.Play("Idie");
+
+        StartCoroutine(Invunerability());
+
+        foreach (Behaviour component in components)
+            component.enabled = true;
+
+    }
+
     public void TakeDamage(float _damage)
     {
         if (invulnerable) return;
@@ -47,9 +61,9 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
-                animator.SetTrigger("die");
                 SoundManager.instance.PlaySound(deathSound);
-                foreach(Behaviour component in components)
+                animator.SetTrigger("die");
+                foreach (Behaviour component in components)
                     component.enabled = false;
 
                 dead = true;
